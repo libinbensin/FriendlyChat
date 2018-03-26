@@ -9,7 +9,6 @@
         android:id="@+id/message_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
         android:layout_above="@+id/chat_layout"/>
 
     <LinearLayout

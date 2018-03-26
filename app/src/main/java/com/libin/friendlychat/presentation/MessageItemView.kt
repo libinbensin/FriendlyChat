@@ -3,6 +3,7 @@ package com.libin.friendlychat.presentation
 import android.content.Context
 import com.libin.friendlychat.R
 import com.libin.friendlychat.common.BaseLinearLayout
+import com.libin.friendlychat.common.Utilities
 import com.libin.friendlychat.persistance.FriendlyMessage
 import kotlinx.android.synthetic.main.view_message_item.view.*
 
@@ -18,8 +19,9 @@ class MessageItemView(context: Context?) : BaseLinearLayout(context) {
     override fun getLayoutId(): Int = R.layout.view_message_item
 
     fun bind(friendlyMessage: FriendlyMessage){
-        textView.text = friendlyMessage.text
-        nameView.text = friendlyMessage.name
+        itemText.text = friendlyMessage.text
+        userTitle.text = friendlyMessage.name
+        postTime.text = Utilities.formatPostTime(friendlyMessage.timeStamp)
     }
 
 }

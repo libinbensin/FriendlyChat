@@ -1,4 +1,5 @@
 <resources>
-    <string name="app_name">Friendly Chat</string>
+    <string name="app_name">Friendly Twit</string>
     <string name="send_button">Send</string>
+    <string name="sign_out">SIgn Out</string>
 </resources>

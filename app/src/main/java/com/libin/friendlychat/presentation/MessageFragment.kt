@@ -1,6 +1,7 @@
 package com.libin.friendlychat.presentation
 
 import android.os.Bundle
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import com.libin.friendlychat.R
 import com.libin.friendlychat.common.BaseFragment
@@ -30,6 +31,7 @@ class MessageFragment: BaseFragment() , MessageFragmentPresenterView{
         mMessageAdapter = MessageAdapter(null)
         messageListView.adapter= mMessageAdapter
         messageListView.layoutManager = LinearLayoutManager(this.context)
+        messageListView.addItemDecoration(DividerItemDecoration(context , DividerItemDecoration.VERTICAL))
         mMessageFragmentPresenter.onAttach()
     }
 
