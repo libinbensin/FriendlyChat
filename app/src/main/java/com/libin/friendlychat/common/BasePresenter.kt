@@ -6,9 +6,5 @@ package com.libin.friendlychat.common
 interface BasePresenter{
     fun onAttach()
 
-    fun onPause()
-
-    fun onResume()
-
     fun onDestroy()
 }

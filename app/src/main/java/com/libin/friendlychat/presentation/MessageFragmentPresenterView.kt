@@ -7,9 +7,5 @@ import com.libin.friendlychat.persistance.FriendlyMessage
  */
 interface MessageFragmentPresenterView {
 
-    fun setMessages(friendlyMessages: List<FriendlyMessage>)
-
     fun onNewMessageReceived(friendlyMessage: FriendlyMessage)
-
-
 }

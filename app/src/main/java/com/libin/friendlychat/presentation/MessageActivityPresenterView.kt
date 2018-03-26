@@ -9,7 +9,7 @@ interface MessageActivityPresenterView {
 
     fun showMessageSent()
 
-    fun onUserSignedOut()
+    fun askUserToLogin()
 
     fun onUserSignedIn()
 }

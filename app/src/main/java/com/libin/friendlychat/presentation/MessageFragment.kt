@@ -12,9 +12,6 @@ import kotlinx.android.synthetic.main.fragment_message.*
  * Created by libin on 3/24/18.
  */
 class MessageFragment: BaseFragment() , MessageFragmentPresenterView{
-    override fun setMessages(friendlyMessages: List<FriendlyMessage>) {
-
-    }
 
     override fun onNewMessageReceived(friendlyMessage: FriendlyMessage) {
         mMessageAdapter.add(friendlyMessage)
@@ -32,6 +29,7 @@ class MessageFragment: BaseFragment() , MessageFragmentPresenterView{
         messageListView.adapter= mMessageAdapter
         messageListView.layoutManager = LinearLayoutManager(this.context)
         messageListView.addItemDecoration(DividerItemDecoration(context , DividerItemDecoration.VERTICAL))
+
         mMessageFragmentPresenter.onAttach()
     }
 

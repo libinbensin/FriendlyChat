@@ -22,13 +22,13 @@ class MessageActivity : AppCompatActivity() , MessageActivityPresenterView {
 
     private val RC_SIGN_IN = 123
 
-    private lateinit var mFirebaseUser: FirebaseUser
+    private var mFirebaseUser: FirebaseUser? = null
 
     // Choose authentication providers
-    var providers = Arrays.asList(AuthUI.IdpConfig.GoogleBuilder().build(),
+    private var providers = Arrays.asList(AuthUI.IdpConfig.GoogleBuilder().build(),
             AuthUI.IdpConfig.EmailBuilder().build())
 
-    override fun onUserSignedOut() {
+    override fun askUserToLogin() {
         invalidateOptionsMenu()
         startActivityForResult(
                 AuthUI.getInstance()
@@ -84,31 +84,29 @@ class MessageActivity : AppCompatActivity() , MessageActivityPresenterView {
         })
 
         sendButton.setOnClickListener {
-            mMessageActivityPresenter.onSendClicked(messageInputView.text.toString() , FirebaseAuth.getInstance().currentUser)
+            mMessageActivityPresenter.onSendClicked(messageInputView.text.toString() , mFirebaseUser)
         }
 
         val auth = FirebaseAuth.getInstance()
-        if (auth.currentUser != null) {
-            // already signed in
-        } else {
+        mFirebaseUser = auth.currentUser
+        if (mFirebaseUser == null) {
             // not signed in
-            onUserSignedOut()
+            askUserToLogin()
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGN_IN) {
-            val response = IdpResponse.fromResultIntent(data)
-            if (resultCode == Activity.RESULT_OK) {
-                // Successfully signed in
-                mFirebaseUser = FirebaseAuth.getInstance().currentUser!!
-                onUserSignedIn()
-            } else if(resultCode == Activity.RESULT_CANCELED){
-                finish()
-            }else{
-                // Sign in failed, check response for error code
-                Toast.makeText(this , "Unable to login in" , Toast.LENGTH_LONG).show()
+            when (resultCode) {
+                Activity.RESULT_OK -> {
+                    // Successfully signed in
+                    mFirebaseUser = FirebaseAuth.getInstance().currentUser!!
+                    onUserSignedIn()
+                }
+                Activity.RESULT_CANCELED -> finish()
+                else -> // Sign in failed, check response for error code
+                    Toast.makeText(this , "Unable to login in" , Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -122,19 +120,14 @@ class MessageActivity : AppCompatActivity() , MessageActivityPresenterView {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId){
-            R.id.menu_sign_out -> FirebaseAuth.getInstance().signOut()
+            R.id.menu_sign_out -> {
+                FirebaseAuth.getInstance().signOut()
+                mFirebaseUser = null
+                Toast.makeText(this , "Your signed out" , Toast.LENGTH_LONG).show()
+                askUserToLogin()
+            }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onPause() {
-        mMessageActivityPresenter.onPause()
-        super.onPause()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        mMessageActivityPresenter.onResume()
     }
 
     override fun onDestroy() {

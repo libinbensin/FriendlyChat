@@ -7,25 +7,18 @@ import com.libin.friendlychat.persistance.FriendlyMessage
  * Created by libin on 3/24/18.
  */
 class MessageFragmentPresenterImpl(mMessageFragmentPresenterView: MessageFragmentPresenterView): MessageFragmentPresenter{
-    override fun onPause() {
-        // NOP
-    }
 
-    override fun onResume() {
-        // NOP
-    }
-
-    private var mChildEventListner: ChildEventListener = object: ChildEventListener{
+    private var mChildEventListener: ChildEventListener = object: ChildEventListener{
         override fun onCancelled(dataSnapShot: DatabaseError?) {
-
+            // NOP
         }
 
         override fun onChildMoved(dataSnapShot: DataSnapshot?, p1: String?) {
-
+            // NOP
         }
 
         override fun onChildChanged(dataSnapShot: DataSnapshot?, p1: String?) {
-
+            // NOP
         }
 
         override fun onChildAdded(dataSnapShot: DataSnapshot?, p1: String?) {
@@ -34,7 +27,7 @@ class MessageFragmentPresenterImpl(mMessageFragmentPresenterView: MessageFragmen
         }
 
         override fun onChildRemoved(dataSnapShot: DataSnapshot?) {
-
+            // NOP
         }
     }
 
@@ -44,12 +37,12 @@ class MessageFragmentPresenterImpl(mMessageFragmentPresenterView: MessageFragmen
     override fun onAttach() {
         mFirebaseDatabase = FirebaseDatabase.getInstance()
         mMessageDatabaseReference = mFirebaseDatabase.reference.child("chat").child("messages")
-        mMessageDatabaseReference.addChildEventListener(mChildEventListner)
+        mMessageDatabaseReference.addChildEventListener(mChildEventListener)
 
     }
 
     override fun onDestroy() {
-
+        mMessageDatabaseReference.removeEventListener(mChildEventListener)
     }
 
 }
